@@ -41,7 +41,7 @@ class Endpoints(Resource):
 
 @api.route('/create_cuser/<name><demographic><age><categories><location>')
 class CreateCuser(name,demographic, age, categories, location):
-    def get(self):
+    def get(self,name,demographic, age, categories, location):
         """
         This class supports creating a consumer user and collecting intiial data.
         """
