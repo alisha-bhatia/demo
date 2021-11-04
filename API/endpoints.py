@@ -5,7 +5,7 @@ The endpoint called `endpoints` will return all available endpoints.
 
 from flask import Flask
 from flask_restx import Resource, Api
-import db.db as db
+#import db.db as db
 
 app = Flask(__name__)
 api = Api(app)
@@ -41,8 +41,9 @@ class Endpoints(Resource):
 
 @api.route('/create_cuser/<name><demographic><age><categories><location>')
 class CreateCuser(Resource):
-    def get(self,name,demographic, age, categories, location):
+    def get(self,name,demographic,age,categories,location):
         """
-        This class supports creating a consumer user and collecting intiial data.
+        This class supports creating a consumer user and
+        collecting intial data.
         """
         return name, demographic, age, categories, location
