@@ -2,5 +2,5 @@ flask
 flask-restx
 flake8
 gunicorn
-pymongo
-bson
+pymongo[srv]
+
