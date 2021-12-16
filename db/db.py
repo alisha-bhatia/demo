@@ -4,13 +4,45 @@ At first, it will just contain stubs that return fake data.
 Gradually, we will fill in actual calls to our datastore.
 """
 
+import os
 
-def fetch_pets():
-    """
-    A function to return all pets in the data store.
-    """
-    return {"tigers": 2, "lions": 3, "zebras": 1}
+import db.db_connect as dbc
 
+DEMO_HOME = os.environ["DEMO_HOME"]
+
+CUSER = "clientUsers"
+BUSER = "businessUsers"
+
+# field names in our DB: 
+CLIENT_TYPE = "clientType"
+PROMOS = "promos" 
+
+# mongoDB connection
+client = dbc.get_client()
+if client is None:
+    print("Failed to connect to MongoDB.")
+    exit(1)
+    
+def fetch_clientTypes():
+    """
+    A function to return all the types of clients
+    a business.
+    """
+    return dbc.fetch_all(BUSER, CLIENT_TYPE)
+
+
+def fetch_busers():
+    """
+    A function to return all business info
+    """
+    return dbc.fetch_all(BUSER)
+
+
+def fetch_promos():
+    """
+    A function to return all active promos
+    """
+    return dbc.fetch_all(PROMOS)
 
 # def create_cuser(name, demographic, age, categories, location):
 #    """
