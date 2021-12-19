@@ -133,3 +133,28 @@ class recList(Resource):
         returns the recommendation list for the customer user
         '''
         return db.fetch_clientList()
+
+    
+@api.route('/buser/interest') 
+class clientsTypes(Resource):
+    """
+    This class supports fetching the types of clients
+    a business user is interested in.
+    """
+    def get(self):
+        """
+        returns client categories of interest.
+        """
+        return db.fetch_clientType()
+    
+    
+@api.route('/buser/promos')
+class promos(Resource):
+    """
+    This class supports fetching that week's promos
+    """
+    def get(self):
+        """
+        returns current promos.
+        """
+        return db.fetch_promos()   
