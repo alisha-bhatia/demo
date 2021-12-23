@@ -2,15 +2,28 @@
 This is the file containing all of the endpoints for our flask app.
 The endpoint called `endpoints` will return all available endpoints.
 """
-
-from flask import Flask
+from http import HTTPStatus
+import json
+from flask import Flask, request, jsonify
 from flask_restx import Resource, Api
 import db.db as db
+import db.data as data
+import werkzeug.exceptions as wz
+
+from flask.json import JSONEncoder
+
+from bson import json_util
+
+# define a cu
+# stom encoder point to the json_util provided by pymongo (or its dependency bson)
+class CustomJSONEncoder(JSONEncoder):
+    def default(self, obj): return json_util.default(obj)
+
 
 app = Flask(__name__)
 api = Api(app)
+app.json_encoder = CustomJSONEncoder
 
-'''
 @api.route('/hello')
 class HelloWorld(Resource):
     """
@@ -23,7 +36,7 @@ class HelloWorld(Resource):
         It just answers with "hello world."
         """
         return {'hello': 'world'}
-'''
+
 
 
 @api.route('/endpoints')
@@ -54,31 +67,71 @@ class Pets(Resource):
 '''
 
 
-@api.route('/cuser')
-class Cuser(Resource):
+@api.route('/users/create/<username>')
+class CreateUser(Resource):
     """
-    This class supports fetching a list of all customer users,
-    specifically the users who want something to do tonight.
+    This class supports adding a user to the chat room.
     """
-    def get(self):
-        """
-        This method returns all cusers.
-        """
-        return db.fetch_cusers()
 
+    @api.response(HTTPStatus.OK, 'Success')
+    @api.response(HTTPStatus.NOT_FOUND, 'Not Found')
+    @api.response(HTTPStatus.NOT_ACCEPTABLE, 'A duplicate key')
+    def post(self, username):
+        """
+        This method adds a user to the chatroom.
+        """
+        """
+        This method adds a room to the room db.
+        """
+        json_data = request.get_json(force=True)
+        json_data['name'] = username
+        data.add_cuser(json_data)
+        return f"{username} added."
 
-@api.route('/buser')
-class Buser(Resource):
+@api.route('/cusers/all')
+class GetCuser(Resource):
     """
-    This class supports fetching a list of all business users, 
+    This class supports fetching a list of all business users,
     specifically the users who are hosting events.
     """
     def get(self):
         """
         This method returns all busers.
         """
-        return db.fetch_busers()
+        return data.fetch_cusers()
 
+
+@api.route('/busers/create/<username>')
+class Buser(Resource):
+    """
+    This class supports fetching a list of all business users,
+    specifically the users who are hosting events.
+    """
+    def post(self, username):
+        """
+        This method adds a user to the chatroom.
+        """
+        """
+        This method adds a room to the room db.
+        """        
+        json_data = request.get_json(force=True)
+        json_data['name'] = username
+        # print(json_data)
+        data.add_buser(json_data)
+        return jsonify(json_data)
+
+
+@api.route('/busers/all')
+class GetBuser(Resource):
+    """
+    This class supports fetching a list of all business users,
+    specifically the users who are hosting events.
+    """
+    def get(self):
+        """
+        This method returns all busers.
+        """
+        return data.fetch_busers()
 
 @api.route('/Inv')
 class Inv(Resource):
@@ -123,7 +176,7 @@ class ClientList(Resource):
 @api.route('/recList')
 class recList(Resource):
     '''
-    This class supports the recommendation List of businesses 
+    This class supports the recommendation List of businesses
     for the customers. Providing businesses that they are interested in
     as well as suggestions, given other favorites from customers with
     similar demographics
@@ -134,8 +187,8 @@ class recList(Resource):
         '''
         return db.fetch_clientList()
 
-    
-@api.route('/buser/interest') 
+
+@api.route('/buser/interest')
 class clientsTypes(Resource):
     """
     This class supports fetching the types of clients
@@ -146,8 +199,8 @@ class clientsTypes(Resource):
         returns client categories of interest.
         """
         return db.fetch_clientType()
-    
-    
+
+
 @api.route('/buser/promos')
 class promos(Resource):
     """
@@ -157,4 +210,4 @@ class promos(Resource):
         """
         returns current promos.
         """
-        return db.fetch_promos()   
+        return db.fetch_promos()
