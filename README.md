@@ -32,8 +32,8 @@ To create the env for a new developer, run `make dev_env`.
  - Use Swagger for initial interaction with server.
  - Use Swagger, pydoc and good docstrings for documentation.
  - Endpoints:
- -   Create a business user with `/create_buser` endpoint. Inputs: Name, Hours, Location,Club type, Pictures, Age restrictions, Quota, Demographic they want, 
- -   Create a consumer user with '/create_cuser' endpoint. Inputs: Name, Age, Demographics, Initial Club Interest Categories, Location
+ -   Create a business user with `/buser/create` endpoint. Input: Username
+ -   Create a consumer user with '/users/create' endpoint. Input: Username
  -   Create an RSVP with '/create_invite' endpoint. Inputs: Business Name, Location, Time of, Number of +1s
  -   Take input from Consumer and "sending" response to business with '/invite_response' endpoint. Inputs: Accept or Deny, Number of Additional People
  -   Keep track of Consumer preferences with '/rec_response' endpoint. Inputs: Thumbs Up or Thumbs Down
