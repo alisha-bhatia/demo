@@ -26,7 +26,7 @@ def get_client():
     Also set global client variable.
     """
     global client
-    if os.environ.get("LOCAL_MONGO", True):
+    if os.environ.get("LOCAL_MONGO", False):
         client = pm.MongoClient()
     else:
         server_api=ServerApi('1')
