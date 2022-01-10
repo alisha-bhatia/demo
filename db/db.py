@@ -8,7 +8,9 @@ import os
 
 import db.db_connect as dbc
 
-DEMO_HOME = os.environ["DEMO_HOME"]
+#HOTSPOT_HOME = os.environ["HOTSPOT_HOME"]
+#print("test", DEMO_HOME)
+#print("TEST", os.environ["DEMO_HOME"])
 
 CUSER = "clientUsers"
 BUSER = "businessUsers"
