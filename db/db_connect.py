@@ -26,18 +26,18 @@ def get_client():
     Also set global client variable.
     """
     global client
-    # if os.environ.get("LOCAL_MONGO", False):
-    #     client = pm.MongoClient()
-    # else:
-    server_api=ServerApi('1')
-    client = pm.MongoClient \
-    (   \
-        f"mongodb+srv://{user_nm}:{passwd}@"    \
-        + f"{cloud_db}/{db_nm}?"    \
-        + "retryWrites=true&w=majority",    \
-        server_api=server_api, tls=True,    \
-        tlsAllowInvalidCertificates=True
-    )
+    if os.environ.get("LOCAL_MONGO", False):
+        client = pm.MongoClient()
+    else:
+        server_api=ServerApi('1')
+        client = pm.MongoClient \
+        (   \
+            f"mongodb+srv://{user_nm}:{passwd}@"    \
+            + f"{cloud_db}/{db_nm}?"    \
+            + "retryWrites=true&w=majority",    \
+            server_api=server_api, tls=True,    \
+            tlsAllowInvalidCertificates=True
+        )
     return client
 
 
