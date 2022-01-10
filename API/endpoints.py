@@ -7,8 +7,10 @@ import json
 from flask import Flask, request, jsonify
 from flask_restx import Resource, Api
 import db.db as db
-import db.data as data
+
 import werkzeug.exceptions as wz
+
+import db.data as data
 
 from flask.json import JSONEncoder
 
@@ -117,7 +119,7 @@ class Buser(Resource):
         json_data = request.get_json(force=True)
         json_data['name'] = username
         # print(json_data)
-        data.add_buser(json_data)
+        db.add_buser(json_data)
         return jsonify(json_data)
 
 
